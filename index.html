@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elite Interior Studio</title>
+  <style>
+    :root{
+      --bg:#08162d;
+      --bg2:#0f2344;
+      --card:#10284d;
+      --accent:#e84c3d;
+      --accent2:#ff7a59;
+      --text:#f4f7fb;
+      --muted:#c7d2e1;
+      --line:rgba(255,255,255,.12);
+      --shadow:0 20px 50px rgba(0,0,0,.35);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      background:linear-gradient(180deg,var(--bg),#040b18 65%);
+      color:var(--text);
+    }
+    a{text-decoration:none;color:inherit}
+    .container{width:min(1200px,92vw);margin:auto}
+    header{
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:rgba(8,22,45,.86);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:16px 0;
+      flex-wrap:wrap;
+    }
+    .brand{
+      font-weight:800;
+      font-size:1.3rem;
+      letter-spacing:.5px;
+    }
+    .brand span{color:var(--accent2)}
+    .nav-links{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .nav-links a{
+      padding:10px 14px;
+      border-radius:999px;
+      color:var(--muted);
+    }
+    .nav-links a:hover,
+    .nav-links a.active{
+      background:rgba(232,76,61,.16);
+      color:#fff;
+    }
+    .hero{padding:34px 0 18px}
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:24px;
+      align-items:center;
+    }
+    .hero h1{
+      font-size:clamp(2.2rem,5vw,4.6rem);
+      line-height:1.02;
+      margin:0 0 14px;
+    }
+    .hero p{
+      color:var(--muted);
+      max-width:58ch;
+      line-height:1.7;
+    }
+    .hero-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:22px;
+    }
+    .btn{
+      border:none;
+      cursor:pointer;
+      padding:14px 20px;
+      border-radius:14px;
+      font-weight:700;
+      transition:.25s ease;
+      display:inline-block;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),#ff6a3d);
+      color:#fff;
+      box-shadow:0 10px 28px rgba(232,76,61,.28);
+    }
+    .btn-secondary{
+      background:transparent;
+      border:1px solid var(--line);
+      color:#fff;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .hero-card{
+      background:linear-gradient(180deg,rgba(16,40,77,.92),rgba(10,24,50,.92));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .slider{
+      position:relative;
+      overflow:hidden;
+      border-radius:20px;
+      height:420px;
+    }
+    .slides{
+      display:flex;
+      height:100%;
+      transition:transform .6s ease;
+    }
+    .slide{
+      min-width:100%;
+      height:100%;
+      position:relative;
+    }
+    .slide img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .slide::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg,transparent,rgba(0,0,0,.56));
+    }
+    .slide-caption{
+      position:absolute;
+      left:18px;
+      right:18px;
+      bottom:18px;
+      z-index:2;
+      background:rgba(7,15,32,.55);
+      backdrop-filter:blur(8px);
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .slide-caption h3,.slide-caption p{margin:0}
+    .slide-caption p{
+      color:#dce6f4;
+      font-size:.95rem;
+      margin-top:6px;
+    }
+    .slider-controls{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:12px;
+      gap:12px;
+    }
+    .dots{
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      flex:1;
+    }
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:rgba(255,255,255,.28);
+      cursor:pointer;
+    }
+    .dot.active{background:var(--accent2)}
+    .mini-btn{
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      border:1px solid var(--line);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+    }
+    section{padding:26px 0}
+    .section-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size:2rem;
+    }
+    .section-title p{margin:0;color:var(--muted)}
+    .toolbar{
+      display:grid;
+      grid-template-columns:1.2fr .7fr .7fr;
+      gap:14px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      padding:14px;
+      border-radius:18px;
+    }
+    .toolbar input,.toolbar select,.appointment input,.appointment textarea{
+      width:100%;
+      padding:14px 15px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:#fff;
+      outline:none;
+    }
+    .toolbar input::placeholder,
+    .appointment input::placeholder,
+    .appointment textarea::placeholder{
+      color:#b8c3d3;
+    }
+    .categories{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:18px 0 8px;
+    }
+    .chip{
+      padding:11px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      cursor:pointer;
+      color:var(--muted);
+    }
+    .chip.active,.chip:hover{
+      background:rgba(232,76,61,.2);
+      color:#fff;
+      border-color:rgba(232,76,61,.45);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:18px;
+    }
+    .card{
+      background:linear-gradient(180deg,rgba(18,37,69,.95),rgba(11,22,44,.96));
+      border:1px solid var(--line);
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+    .card img{
+      width:100%;
+      height:190px;
+      object-fit:cover;
+      display:block;
+    }
+    .card-body{padding:16px}
+    .card h3{margin:0 0 8px}
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:.95rem;
+      margin-bottom:12px;
+    }
+    .price{
+      color:#fff;
+      font-weight:800;
+    }
+    .card-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .small{
+      padding:11px 14px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .small.primary{
+      background:linear-gradient(135deg,var(--accent),#ff6a3d);
+      color:#fff;
+    }
+    .small.ghost{
+      background:transparent;
+      color:#fff;
+      border:1px solid var(--line);
+    }
+    .appointment{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      align-items:start;
+    }
+    .panel{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+    .full{grid-column:1/-1}
+    .contact-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:14px;
+    }
+    .contact-box{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+    }
+    footer{
+      padding:34px 0 50px;
+      color:var(--muted);
+      text-align:center;
+      border-top:1px solid var(--line);
+      margin-top:26px;
+    }
+    .hidden{display:none !important}
+    @media (max-width:900px){
+      .hero-grid,.appointment,.toolbar,.form-grid{grid-template-columns:1fr}
+      .slider{height:320px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">Elite<span>Interior</span></div>
+      <nav class="nav-links">
+        <a href="#home" class="active">Home</a>
+        <a href="#services">Services</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#appointment">Book Appointment</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home" class="container hero">
+    <div class="hero-grid">
+      <div>
+        <h1>Modern Interior Design for Every Home</h1>
+        <p>Explore kitchen units, wardrobes, TV units, bedroom cupboards, hall decor, and grocery storage solutions in one premium website with fast search, filters, and easy booking.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#gallery">Browse Designs</a>
+          <a class="btn btn-secondary" href="#appointment">Book a Meeting</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="slider" aria-label="Interior slideshow">
+          <div class="slides" id="slides"></div>
+        </div>
+        <div class="slider-controls">
+          <button class="mini-btn" id="prevBtn">‹</button>
+          <div class="dots" id="dots"></div>
+          <button class="mini-btn" id="nextBtn">›</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <section id="services" class="container">
+    <div class="section-title">
+      <div>
+        <h2>Search and Filter</h2>
+        <p>Find the right interior item quickly.</p>
+      </div>
+    </div>
+    <div class="toolbar">
+      <input id="searchBar" type="search" placeholder="Search items like kitchen, wardrobe, TV unit, bedroom..." />
+      <select id="categoryFilter">
+        <option value="all">All Categories</option>
+        <option value="kitchen">Kitchen</option>
+        <option value="wardrobe">Wardrobe</option>
+        <option value="tv">TV Unit</option>
+        <option value="bedroom">Bedroom</option>
+        <option value="hall">Hall</option>
+        <option value="grocery">Grocery</option>
+      </select>
+      <select id="sortFilter">
+        <option value="featured">Sort by</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+      </select>
+    </div>
+    <div class="categories" id="quickCats"></div>
+  </section>
+
+  <section id="gallery" class="container">
+    <div class="section-title">
+      <div>
+        <h2>Interior Collections</h2>
+        <p>Tap any item to view more details and book a consultation.</p>
+      </div>
+    </div>
+    <div class="grid" id="productGrid"></div>
+  </section>
+
+  <section id="appointment" class="container">
+    <div class="section-title">
+      <div>
+        <h2>Book Appointment</h2>
+        <p>Let customers arrange a meeting with your interior designer team.</p>
+      </div>
+    </div>
+    <div class="appointment">
+      <div class="panel">
+        <h3>Appointment Form</h3>
+        <div class="form-grid" style="margin-top:14px">
+          <input type="text" placeholder="Customer name" />
+          <input type="tel" placeholder="Phone number" />
+          <input type="email" placeholder="Email address" />
+          <input type="date" />
+          <select>
+            <option>Choose service</option>
+            <option>Kitchen Design</option>
+            <option>Wardrobe Design</option>
+            <option>TV Unit Design</option>
+            <option>Bedroom Cupboard</option>
+            <option>Hall Interior</option>
+            <option>Grocery Storage</option>
+          </select>
+          <select>
+            <option>Meeting type</option>
+            <option>Home Visit</option>
+            <option>Studio Visit</option>
+            <option>Online Call</option>
+          </select>
+          <textarea class="full" placeholder="Write your requirement here..."></textarea>
+          <button class="btn btn-primary full">Book Now</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Why customers trust us</h3>
+        <p style="color:var(--muted);line-height:1.7">Easy access to every section, clear pricing, elegant visuals, and a direct contact path help customers explore interiors without confusion.</p>
+        <div class="contact-grid" style="margin-top:16px">
+          <div class="contact-box"><strong>Kitchen</strong><br><span style="color:var(--muted)">Modular and custom layouts</span></div>
+          <div class="contact-box"><strong>Wardrobe</strong><br><span style="color:var(--muted)">Sliding and hinged designs</span></div>
+          <div class="contact-box"><strong>TV Unit</strong><br><span style="color:var(--muted)">Wall-mounted and stylish</span></div>
+          <div class="contact-box"><strong>Bedroom</strong><br><span style="color:var(--muted)">Cupboards and storage</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="container">
+    <div class="section-title">
+      <div>
+        <h2>Contact Designer</h2>
+        <p>Make it simple for customers to connect with you.</p>
+      </div>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-box">Phone: +91 90000 00000</div>
+      <div class="contact-box">Email: hello@eliteinterior.com</div>
+      <div class="contact-box">Location: Hyderabad, Telangana</div>
+      <div class="contact-box">Instagram: @eliteinteriorstudio</div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Elite Interior Studio. Designed for a premium interior business website.
+  </footer>
+
+  <script>
+    const products = [
+      {name:'Modern Kitchen', category:'kitchen', price:48000, img:'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1200&q=80', desc:'Sleek modular kitchen with smart storage.'},
+      {name:'Luxury Wardrobe', category:'wardrobe', price:35000, img:'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80', desc:'Elegant wardrobe for a clean bedroom look.'},
+      {name:'Stylish TV Unit', category:'tv', price:18000, img:'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80', desc:'Modern TV wall unit with premium finish.'},
+      {name:'Two Bedroom Cupboard', category:'bedroom', price:42000, img:'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80', desc:'Large cupboard for two-bedroom storage needs.'},
+      {name:'Elegant Hall Interior', category:'hall', price:55000, img:'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80', desc:'Warm and inviting living room design.'},
+      {name:'Grocery Storage', category:'grocery', price:14000, img:'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1200&q=80', desc:'Organized storage for daily essentials.'}
+    ];
+    const slidesData = [
+      {title:'Kitchen Design', text:'Beautiful modular kitchen concepts.'},
+      {title:'Wardrobe Style', text:'Smart storage with premium finish.'},
+      {title:'TV Unit Look', text:'Clean and modern entertainment wall.'},
+      {title:'Bedroom Cupboards', text:'Comfortable spaces with practical storage.'}
+    ];
+    const slideImages = [
+      'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80'
+    ];
+
+    const slidesEl = document.getElementById('slides');
+    const dotsEl = document.getElementById('dots');
+    const gridEl = document.getElementById('productGrid');
+    const quickCats = document.getElementById('quickCats');
+    const searchBar = document.getElementById('searchBar');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const sortFilter = document.getElementById('sortFilter');
+
+    let index = 0;
+    let filtered = [...products];
+
+    slidesData.forEach((s,i)=>{
+      const div = document.createElement('div');
+      div.className='slide';
+      div.innerHTML = `<img src="${slideImages[i]}" alt="${s.title}"><div class="slide-caption"><h3>${s.title}</h3><p>${s.text}</p></div>`;
+      slidesEl.appendChild(div);
+      const dot = document.createElement('div');
+      dot.className='dot';
+      dot.addEventListener('click',()=>showSlide(i));
+      dotsEl.appendChild(dot);
+    });
+
+    function showSlide(i){
+      index = (i + slidesData.length) % slidesData.length;
+      slidesEl.style.transform = `translateX(-${index*100}%)`;
+      [...dotsEl.children].forEach((d,di)=>d.classList.toggle('active',di===index));
+    }
+    document.getElementById('prevBtn').onclick=()=>showSlide(index-1);
+    document.getElementById('nextBtn').onclick=()=>showSlide(index+1);
+    setInterval(()=>showSlide(index+1),4000);
+    showSlide(0);
+
+    ['all','kitchen','wardrobe','tv','bedroom','hall','grocery'].forEach(cat=>{
+      const b=document.createElement('button');
+      b.className='chip';
+      b.textContent=cat==='all'?'All Items':cat.toUpperCase();
+      b.onclick=()=>{
+        categoryFilter.value=cat;
+        renderChips(cat);
+        applyFilters();
+      };
+      quickCats.appendChild(b);
+    });
+
+    function renderChips(active='all'){
+      [...quickCats.children].forEach(ch=>{
+        const t=ch.textContent.toLowerCase();
+        const match=(active==='all'&&t==='all items')||t.includes(active);
+        ch.classList.toggle('active',match);
+      });
+    }
+
+    function applyFilters(){
+      const q = searchBar.value.toLowerCase().trim();
+      const cat = categoryFilter.value;
+      const sort = sortFilter.value;
+      filtered = products.filter(p =>
+        (cat==='all' || p.category===cat) &&
+        (p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))
+      );
+      if(sort==='low') filtered.sort((a,b)=>a.price-b.price);
+      if(sort==='high') filtered.sort((a,b)=>b.price-a.price);
+      renderGrid();
+      renderChips(cat);
+    }
+
+    function renderGrid(){
+      gridEl.innerHTML='';
+      filtered.forEach(p=>{
+        const card=document.createElement('div');
+        card.className='card';
+        card.innerHTML=`
+          <img src="${p.img}" alt="${p.name}">
+          <div class="card-body">
+            <h3>${p.name}</h3>
+            <div class="meta">
+              <span>${p.category.toUpperCase()}</span>
+              <span class="price">₹${p.price.toLocaleString()}</span>
+            </div>
+            <p style="color:var(--muted);line-height:1.6;margin:0 0 14px">${p.desc}</p>
+            <div class="card-actions">
+              <button class="small primary">Book This</button>
+              <button class="small ghost">View Details</button>
+            </div>
+          </div>`;
+        gridEl.appendChild(card);
+      });
+    }
+
+    searchBar.addEventListener('input', applyFilters);
+    categoryFilter.addEventListener('change', ()=>{renderChips(categoryFilter.value);applyFilters();});
+    sortFilter.addEventListener('change', applyFilters);
+    applyFilters();
+  </script>
+</body>
+</html>
